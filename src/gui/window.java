@@ -20,6 +20,7 @@ public class window extends JFrame {
 		this.board = new ShapeBoard();
 		setTitle("Shape renderer");
 		setSize(new Dimension(500, 500));
+		setResizable(false);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.getContentPane().add(board);
 	}
@@ -28,9 +29,26 @@ public class window extends JFrame {
 
 		shape = new Shape();
 		
-		List<Point> points = Arrays.asList(new Point(20,20,20),new Point(30,20,20),new Point(30,30,20),new Point(20,30,20));
+		//hard coded 3d cube
+		List<Point> points = Arrays.asList(
+				new Point(200,200,200),
+				new Point(300,200,200),
+				new Point(300,300,200),
+				new Point(200,300,200),
+				new Point(200,200,300),
+				new Point(300,200,300),
+				new Point(300,300,300),
+				new Point(200,300,300)
+				);
 		
-		
+		shape.addConnection(points.get(0), points.get(1));
+		shape.addConnection(points.get(0), points.get(3));
+		shape.addConnection(points.get(0), points.get(4));
+		shape.addConnection(points.get(0), points.get(3));
+		shape.addConnection(points.get(1), points.get(2));
+		shape.addConnection(points.get(1), points.get(5));
+		shape.addConnection(points.get(0), points.get(3));
+		shape.addConnection(points.get(2), points.get(6));
 		points.forEach(shape::addPoint);
 		
 		board.addShape(shape);

@@ -1,30 +1,31 @@
 package shape;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Shape {
 
+	public static int[] origin = new int[] { 250, 250, 250 };
 	private Set<Point> points;
-	private Collection<Collection<Point>> connections;
+	private Collection<Point[]> connections;
 
 	public Shape() {
 		// TODO Auto-generated constructor stub
 		points = new HashSet<Point>();
+		connections = new HashSet<Point[]>();
+		
 	}
 
 	public void addConnection(Point a, Point b) throws IllegalArgumentException {
 
-		connections.add(Arrays.asList(a,b));
+		connections.add(new Point[] { a, b });
 
 	}
 
 	public void addPoint(Point point) {
-		
-		if(point == null)
+
+		if (point == null)
 			System.out.println("null pointer in shape");
 
 		points.add(point);
@@ -41,10 +42,10 @@ public class Shape {
 		double rads = Math.toRadians(degrees);
 
 		for (Point p : points) {
-			double tempY = p.getY();
-			double tempZ = p.getZ();
-			p.setY(tempY * Math.cos(rads) - tempZ * Math.sin(rads));
-			p.setZ(tempY * Math.sin(rads) + tempZ * Math.cos(rads));
+			double tempY = p.getY() - origin[1];
+			double tempZ = p.getZ() - origin[2];
+			p.setY(tempY * Math.cos(rads) - tempZ * Math.sin(rads) + origin[1]);
+			p.setZ(tempY * Math.sin(rads) + tempZ * Math.cos(rads) + origin[2]);
 
 		}
 
@@ -60,10 +61,10 @@ public class Shape {
 		double rads = Math.toRadians(degrees);
 
 		for (Point p : points) {
-			double tempX = p.getX();
-			double tempZ = p.getZ();
-			p.setX(tempX * Math.cos(rads) + tempZ * Math.sin(rads));
-			p.setZ(tempZ * Math.cos(rads) - tempX * Math.sin(rads));
+			double tempX = p.getX() - origin[0];
+			double tempZ = p.getZ() - origin[2];
+			p.setX(tempX * Math.cos(rads) + tempZ * Math.sin(rads) + origin[0]);
+			p.setZ(tempZ * Math.cos(rads) - tempX * Math.sin(rads) + origin[2]);
 
 		}
 
@@ -78,10 +79,10 @@ public class Shape {
 		double rads = Math.toRadians(degrees);
 
 		for (Point p : points) {
-			double tempX = p.getX();
-			double tempY = p.getY();
-			p.setX(tempX * Math.cos(rads) - tempY * Math.sin(rads));
-			p.setY(tempX * Math.sin(rads) + tempY * Math.cos(rads));
+			double tempX = p.getX() - origin[0];
+			double tempY = p.getY() - origin[1];
+			p.setX(tempX * Math.cos(rads) - tempY * Math.sin(rads) + origin[0]);
+			p.setY(tempX * Math.sin(rads) + tempY * Math.cos(rads) + origin[1]);
 
 		}
 
@@ -97,7 +98,7 @@ public class Shape {
 	/**
 	 * @return the connections
 	 */
-	public Collection<Collection<Point>> getConnections() {
+	public Collection<Point[]> getConnections() {
 		return connections;
 	}
 

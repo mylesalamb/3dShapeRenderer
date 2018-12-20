@@ -26,10 +26,11 @@ public class Point {
 	
 	/**
 	 * @return 2d projection of this point
+	 * tidies the drawing code
 	 */
-	public double[] get2dProjection() {
+	public int[] getRoundedProjection() {
 		
-		return new double[] {this.x,this.y};
+		return new int[] {(int)Math.round(this.x),(int)Math.round(this.y)};
 		
 	}
 

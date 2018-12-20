@@ -19,51 +19,64 @@ public class ShapeBoard extends JPanel {
 		this.setBackground(Color.black);
 		this.setIgnoreRepaint(true);
 		shapes = new ArrayList<>();
+
+		// this.addComponentListener(new);
 	}
 
+	/**
+	 * scehduler using delta timing got up to here logic wise
+	 */
 	public void start() {
 
+		long lastTime = System.nanoTime();
+		int frameDelta = 0;
+
 		while (true) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			long currTime = System.nanoTime();
+			frameDelta += (int) ((currTime - lastTime) / 1000000);
+
+			if (frameDelta > 1000000 * 8) {
+				renderLoop();
+				lastTime = currTime;
+				frameDelta = 0;
+
+				shapes.get(0).rotateZ(1);
+				shapes.get(0).rotateY(2);
+				shapes.get(0).rotateX(1);
 			}
-			renderLoop();
-			
-			shapes.get(0).rotateZ(10);
+
 		}
 
 	}
-	
+
 	/**
-	 * active rendering loop so we cna control
-	 * when paint events are called
+	 * active rendering loop so we cna control when paint events are called
 	 */
 	public void renderLoop() {
 
 		Graphics pen = this.getGraphics();
-		
-		//clear panel for next frame
+
+		// clear panel for next frame
 		pen.setColor(this.getBackground());
-		System.out.print(this.getBackground().toString());
 		pen.fillRect(0, 0, getWidth(), getHeight());
 		pen.setColor(Color.white);
 
 		for (Shape shape : shapes) {
 			for (Point point : shape.getPoints()) {
-
-				double[] args = point.get2dProjection();
-
-				pen.drawOval((int) Math.round(args[0]), (int) Math.round(args[1]), 5, 5);
-
+				int[] args = point.getRoundedProjection();
+				pen.drawOval(args[0], args[1], 5, 5);
 			}
 
+			for (Point[] connection : shape.getConnections()) {
+				int[] from = connection[0].getRoundedProjection();
+				int[] to = connection[1].getRoundedProjection();
+				pen.drawLine(from[0], from[1], to[0], to[1]);
+			}
 		}
 
 		pen.dispose();
-	
+
 	}
 
 	public void addShape(Shape arg) {
