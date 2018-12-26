@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 
 import shape.Point;
 import shape.Shape;
+import shape.Shapes;
 
 public class window extends JFrame {
 	
@@ -27,31 +28,8 @@ public class window extends JFrame {
 
 	public void start() {
 
-		shape = new Shape();
-		
-		//hard coded 3d cube
-		List<Point> points = Arrays.asList(
-				new Point(200,200,200),
-				new Point(300,200,200),
-				new Point(300,300,200),
-				new Point(200,300,200),
-				new Point(200,200,300),
-				new Point(300,200,300),
-				new Point(300,300,300),
-				new Point(200,300,300)
-				);
-		
-		shape.addConnection(points.get(0), points.get(1));
-		shape.addConnection(points.get(0), points.get(3));
-		shape.addConnection(points.get(0), points.get(4));
-		shape.addConnection(points.get(0), points.get(3));
-		shape.addConnection(points.get(1), points.get(2));
-		shape.addConnection(points.get(1), points.get(5));
-		shape.addConnection(points.get(0), points.get(3));
-		shape.addConnection(points.get(2), points.get(6));
-		points.forEach(shape::addPoint);
-		
-		board.addShape(shape);
+		Shape input = Shapes.getSquare();
+		board.addShape(input);
 		setVisible(true);
 		board.start();
 		

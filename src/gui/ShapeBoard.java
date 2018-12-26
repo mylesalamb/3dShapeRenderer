@@ -24,21 +24,25 @@ public class ShapeBoard extends JPanel {
 	}
 
 	/**
-	 * scehduler using delta timing got up to here logic wise
+	 * scheduler for calclulating for when the view and
+	 * the model should change
 	 */
 	public void start() {
-
-		long lastTime = System.nanoTime();
+		
+		//setup vars for calculation
 		int frameDelta = 0;
+		int tickDelta = 0;
+		long lastFrame = System.nanoTime();
+		long lastTick = System.nanoTime();
 
 		while (true) {
 
 			long currTime = System.nanoTime();
-			frameDelta += (int) ((currTime - lastTime) / 1000000);
+			frameDelta += (int) ((currTime - lastFrame) / 1000000);
 
 			if (frameDelta > 1000000 * 8) {
 				renderLoop();
-				lastTime = currTime;
+				lastFrame = currTime;
 				frameDelta = 0;
 
 				shapes.get(0).rotateZ(1);
@@ -65,7 +69,7 @@ public class ShapeBoard extends JPanel {
 		for (Shape shape : shapes) {
 			for (Point point : shape.getPoints()) {
 				int[] args = point.getRoundedProjection();
-				pen.drawOval(args[0], args[1], 5, 5);
+				pen.fillOval(args[0], args[1], 5, 5);
 			}
 
 			for (Point[] connection : shape.getConnections()) {
