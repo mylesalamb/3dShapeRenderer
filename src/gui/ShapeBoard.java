@@ -134,7 +134,6 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		System.out.println("mouse dragged");
 		currX = arg0.getX();
 		this.shapes.get(0).rotateY(Math.toDegrees(Math.asin((currX-prevX)/250.00)));
 		prevX=currX;
