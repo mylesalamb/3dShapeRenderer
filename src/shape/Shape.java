@@ -11,22 +11,26 @@ public class Shape {
 	private Collection<Point[]> connections;
 
 	public Shape() {
-		// TODO Auto-generated constructor stub
 		points = new HashSet<Point>();
 		connections = new HashSet<Point[]>();
 		
 	}
 
-	public void addConnection(Point a, Point b) throws IllegalArgumentException {
-
+	/**
+	 * associates a given two points with a connection on the shape
+	 * @param a one of the points assocaited with the connection
+	 * @param b
+	 */
+	public void addConnection(Point a, Point b) {
 		connections.add(new Point[] { a, b });
 
 	}
 
+	/**
+	 * Associates a given point object with the shape
+	 * @param point the point to be added to the shape
+	 */
 	public void addPoint(Point point) {
-
-		if (point == null)
-			System.out.println("null pointer in shape");
 
 		points.add(point);
 
@@ -35,11 +39,10 @@ public class Shape {
 	/**
 	 * rotate the given shape on the x axis by degrees of arguement
 	 * 
-	 * @param degrees
+	 * @param rads the number of radians to rotate the shape by
 	 */
-	public void rotateX(double degrees) {
-
-		double rads = Math.toRadians(degrees);
+	public void rotateX(double rads) {
+		System.out.println(rads);
 
 		for (Point p : points) {
 			double tempY = p.getY() - origin[1];
@@ -54,11 +57,11 @@ public class Shape {
 	/**
 	 * rotate the shape around the Y axis by param degrees
 	 * 
-	 * @param degrees
+	 * @param rads the number of radians to rotate the shape by
 	 */
-	public void rotateY(double degrees) {
-
-		double rads = Math.toRadians(degrees);
+	public void rotateY(double rads) {
+		
+		System.out.println("in rot y: "+rads);
 
 		for (Point p : points) {
 			double tempX = p.getX() - origin[0];
@@ -71,12 +74,11 @@ public class Shape {
 	}
 
 	/**
-	 * @param degrees rotates the given shape around the z axis by the given number
-	 *                of degrees
+	 * @param rads the number of radians to rotate the shape by
 	 */
-	public void rotateZ(double degrees) {
+	public void rotateZ(double rads) {
 
-		double rads = Math.toRadians(degrees);
+		
 
 		for (Point p : points) {
 			double tempX = p.getX() - origin[0];

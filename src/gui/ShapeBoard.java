@@ -14,15 +14,17 @@ import shape.Point;
 import shape.Shape;
 
 /**
- * a class to grpahically represent shape objects
+ * a class to graphically represent shape objects
  * 
  * @author mashe
  *
  */
 public class ShapeBoard extends JPanel implements MouseListener, MouseMotionListener {
 
+	// the shapes to represent and the frame cap for which they should be rendered
+	// at
 	public static final int FRAME_CAP = 60;
-	public static final int TICK_RATE = 60;
+	public static final int INTERVAL = 1_000_000_000 / FRAME_CAP;
 	private List<Shape> shapes;
 
 	public ShapeBoard() {
@@ -38,42 +40,37 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 	}
 
 	/**
-	 * scheduler for calclulating for when the view and the model should change
+	 * scheduler for calculating for when the view and the model should change
 	 */
 	public void start() {
 
+		// prevent blocking of the main thread and event handlers
 		Thread schedule = new Thread(new Runnable() {
-
 			@Override
 			public void run() {
-				System.out.println("run called");
-				runs();
-				// should proabably rename the methods here
-				System.out.println("run finished");
+				scheduler();
 			}
 		});
 		schedule.start();
 
 	}
 
-	private void runs() {
+	private void scheduler() {
 
 		// setup vars for calculation
-		int frameDelta = 0;
-		int tickDelta = 0;
-		long lastFrame = System.nanoTime();
-		long lastTick = System.nanoTime();
+		long frameDelta = 0;
+		long lastTime = System.nanoTime();
 
 		while (true) {
 
 			long currTime = System.nanoTime();
-			frameDelta += (int) ((currTime - lastFrame) / 1000000);
+			frameDelta = (currTime - lastTime);
 
-			if (frameDelta > 1000000 * 5) {
+			if (frameDelta >= INTERVAL) {
 				renderLoop();
-				lastFrame = currTime;
+				lastTime = currTime;
 				frameDelta = 0;
-				//shapes.get(0).rotateX(1);
+				shapes.get(0).rotateZ(Math.PI/180.00);
 			}
 
 		}
@@ -114,17 +111,14 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 	 * 
 	 * @param arg the shape to be added to the render loop
 	 */
-	
-	private int currX,currY,prevX,prevY;
-	
-	
+
+	private int currX, currY, prevX, prevY;
+
 	public void addShape(Shape arg) {
 
 		this.shapes.add(arg);
 
 	}
-
-	
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
@@ -134,9 +128,17 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
+
 		currX = arg0.getX();
-		this.shapes.get(0).rotateY(Math.toDegrees(Math.asin((currX-prevX)/250.00)));
-		prevX=currX;
+		currY = arg0.getY();
+		double ySpin = Math.asin((currX - prevX) / 125.00);
+		this.shapes.get(0).rotateY(ySpin);
+
+		double xSpin = -Math.atan((currY - prevY) / 125.00);
+		this.shapes.get(0).rotateX(xSpin);
+
+		prevY = currY;
+		prevX = currX;
 	}
 
 	@Override
@@ -148,28 +150,33 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	/*
+	 * reset the state when the user begins to click
+	 * 
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		currX = arg0.getX();
 		prevX = arg0.getX();
 		currY = arg0.getY();
 		prevY = arg0.getY();
-		
+
 	}
 
 }
