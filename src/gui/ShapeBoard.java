@@ -70,7 +70,6 @@ public class ShapeBoard extends JPanel implements MouseListener, MouseMotionList
 				renderLoop();
 				lastTime = currTime;
 				frameDelta = 0;
-				shapes.get(0).rotateZ(Math.PI/180.00);
 			}
 
 		}
